@@ -15,13 +15,13 @@ from jupyter_notebook_parser import JupyterNotebookParser
 
 parser = JupyterNotebookParser('my_notebook.ipynb')
 
-all_cells = parser.get_all_cells()  # List[Dict], each Dict is a notebook cell
+parser.get_all_cells()  # returns List[Dict], each Dict is a notebook cell
 
-code_cells = parser.get_code_cells()  # List[Dict], each Dict is a code cell
-code_cell_indices = parser.get_code_cell_indices()  # List[int], each int is the index of the code cell
-code_cell_sources = parser.get_code_cell_sources()  # List[str], each str is the source code of the code cell
+parser.get_code_cells()  # returns List[Dict], each Dict is a code cell
+parser.get_code_cell_indices()  # returns List[int], each int is a code cell's index
+parser.get_code_cell_sources()  # returns List[str], each str is a code cell's Python code
 
-markdown_cells = parser.get_markdown_cells()  # List[Dict], each Dict is a markdown cel
-markdown_cell_indices = parser.get_markdown_cell_indices()  # List[int]
-markdown_sources = parser.get_markdown_cell_sources()  # List[str], each str is the raw markdown text
+parser.get_markdown_cells()  # returns List[Dict], each Dict is a markdown cel
+parser.get_markdown_cell_indices()  # returns List[int], each is a markdown cell's index
+parser.get_markdown_cell_sources()  # returns List[str], each is a markdown cell's text
 ```
