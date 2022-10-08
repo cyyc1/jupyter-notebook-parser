@@ -22,7 +22,7 @@ class JupyterNotebookParser:
         return self._get_cells(type_='markdown')
 
     def _get_cells(self, type_: str) -> List[str]:
-        if not 'cells' in self.notebook_content:
+        if 'cells' not in self.notebook_content:
             raise IOError('This notebook file is possibly corrupted.')
 
         if type_ not in {'code', 'markdown'}:

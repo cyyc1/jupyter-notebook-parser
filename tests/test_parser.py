@@ -30,7 +30,7 @@ def test_parser_get_markdown_cells():
     code_cells = parser.get_markdown_cells()
     expected_cells = [
         '## Section 1',
-        'Here is a math formula:\n\n$$c = \sqrt{a^2 + b^2}$$',
+        'Here is a math formula:\n\n$$c = \sqrt{a^2 + b^2}$$',  # noqa: W605
         'Some texts.',
         '### Some more texts\n\n| Syntax      | Description |\n| ----------- | ----------- |\n| Header      | Title       |\n| Paragraph   | Text        |',  # noqa: E501
     ]
