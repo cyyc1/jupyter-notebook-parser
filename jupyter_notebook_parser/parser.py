@@ -1,5 +1,5 @@
 import json
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 
 class JupyterNotebookParser:
@@ -15,15 +15,21 @@ class JupyterNotebookParser:
         else:
             self.notebook_content: Dict = notebook_content
 
+    def get_all_cells(self) -> List[Dict]:
+        return self._get_cells(type_=None)
+
     def get_code_cells(self) -> List[str]:
         return self._get_cells(type_='code')
 
     def get_markdown_cells(self) -> List[str]:
         return self._get_cells(type_='markdown')
 
-    def _get_cells(self, type_: str) -> List[str]:
+    def _get_cells(self, type_: Optional[str]) -> List[str]:
         if 'cells' not in self.notebook_content:
             raise IOError('This notebook file is possibly corrupted.')
+
+        if type_ is None:
+            return self.notebook_content['cells']
 
         if type_ not in {'code', 'markdown'}:
             raise ValueError('Invalid `type` value')
