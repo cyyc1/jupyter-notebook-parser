@@ -16,7 +16,6 @@ class JupyterNotebookParser:
         else:
             self.notebook_content: Dict = notebook_content
 
-
     def get_all_cells(self) -> List[Dict]:
         if 'cells' not in self.notebook_content:
             raise ValueError(self.notebook_corrupted_msg)

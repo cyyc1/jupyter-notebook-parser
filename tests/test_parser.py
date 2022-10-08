@@ -14,9 +14,7 @@ expected_all_cells = [
         'id': '1a4e6df0',
         'metadata': {},
         'outputs': [],
-        'source': [
-            'from typing import List, Dict'
-        ]
+        'source': ['from typing import List, Dict'],
     },
     {
         'cell_type': 'code',
@@ -27,16 +25,14 @@ expected_all_cells = [
         'source': [
             'def some_function(arg1: List[str], arg2: Dict[str, float]):\n',
             '    print(arg1)\n',
-            '    return arg2'
-        ]
+            '    return arg2',
+        ],
     },
     {
         'cell_type': 'markdown',
         'id': '0040a4f4',
         'metadata': {},
-        'source': [
-            '## Section 1'
-        ]
+        'source': ['## Section 1'],
     },
     {
         'cell_type': 'code',
@@ -44,17 +40,9 @@ expected_all_cells = [
         'id': '3a1b985c',
         'metadata': {},
         'outputs': [
-            {
-                'name': 'stdout',
-                'output_type': 'stream',
-                'text': [
-                    "['a', 'b']\n"
-                ]
-            }
+            {'name': 'stdout', 'output_type': 'stream', 'text': ["['a', 'b']\n"]},
         ],
-        'source': [
-            "a = some_function(['a', 'b'], {'c': 0.2})"
-        ]
+        'source': ["a = some_function(['a', 'b'], {'c': 0.2})"],
     },
     {
         'cell_type': 'code',
@@ -62,19 +50,13 @@ expected_all_cells = [
         'id': '2dfd7d0b',
         'metadata': {},
         'outputs': [],
-        'source': [
-            'assert 3 == 3'
-        ]
+        'source': ['assert 3 == 3'],
     },
     {
         'cell_type': 'markdown',
         'id': 'de5a89c9',
         'metadata': {},
-        'source': [
-            'Here is a math formula:\n',
-            '\n',
-            '$$c = \\sqrt{a^2 + b^2}$$'
-        ]
+        'source': ['Here is a math formula:\n', '\n', '$$c = \\sqrt{a^2 + b^2}$$'],
     },
     {
         'cell_type': 'code',
@@ -87,34 +69,22 @@ expected_all_cells = [
             '    """\n',
             '    Some docstring\n',
             '    """\n',
-            '    return False'
-        ]
+            '    return False',
+        ],
     },
     {
         'cell_type': 'markdown',
         'id': 'bf1cb851',
         'metadata': {},
-        'source': [
-            'Some texts.'
-        ]
+        'source': ['Some texts.'],
     },
     {
         'cell_type': 'code',
         'execution_count': 6,
         'id': '01224536',
         'metadata': {},
-        'outputs': [
-            {
-             'name': 'stdout',
-             'output_type': 'stream',
-             'text': [
-              'False\n'
-             ]
-            }
-        ],
-        'source': [
-            'print(some_other_function())'
-        ]
+        'outputs': [{'name': 'stdout', 'output_type': 'stream', 'text': ['False\n']}],
+        'source': ['print(some_other_function())'],
     },
     {
         'cell_type': 'markdown',
@@ -126,8 +96,8 @@ expected_all_cells = [
             '| Syntax      | Description |\n',
             '| ----------- | ----------- |\n',
             '| Header      | Title       |\n',
-            '| Paragraph   | Text        |'
-        ]
+            '| Paragraph   | Text        |',
+        ],
     },
     {
         'cell_type': 'code',
@@ -135,18 +105,10 @@ expected_all_cells = [
         'id': 'dc0edb11',
         'metadata': {},
         'outputs': [
-            {
-                 'name': 'stdout',
-                 'output_type': 'stream',
-                 'text': [
-                     'abcd"efg".\n'
-                 ]
-            }
+            {'name': 'stdout', 'output_type': 'stream', 'text': ['abcd"efg".\n']},
         ],
-        'source': [
-            "print('abcd\"efg\".')"
-        ]
-    }
+        'source': ["print('abcd\"efg\".')"],
+    },
 ]
 
 
@@ -172,12 +134,14 @@ def test_parser_get_code_cells():
     ]
     assert code_cells == expected_code_cells
 
+
 def test_parser_get_code_cell_indices():
     filename = os.path.join(RESOURCE_DIR, 'jupyter_notebook_1.ipynb')
     parser = JupyterNotebookParser(filename)
     code_cell_indices = parser.get_code_cell_indices()
     expected_indices = [0, 1, 3, 4, 6, 8, 10]
     assert code_cell_indices == expected_indices
+
 
 def test_parser_get_code_cell_sources():
     filename = os.path.join(RESOURCE_DIR, 'jupyter_notebook_1.ipynb')
@@ -190,9 +154,10 @@ def test_parser_get_code_cell_sources():
         'assert 3 == 3',
         'def some_other_function() -> bool:\n    """\n    Some docstring\n    """\n    return False',  # noqa: E501
         'print(some_other_function())',
-        'print(\'abcd"efg".\')',
+        "print('abcd\"efg\".')",
     ]
     assert code_sources == expected_sources
+
 
 def test_parser_get_markdown_cells():
     filename = os.path.join(RESOURCE_DIR, 'jupyter_notebook_1.ipynb')
@@ -206,6 +171,7 @@ def test_parser_get_markdown_cells():
     ]
     assert markdown_cells == expected_markdown_cells
 
+
 def test_parser_get_markdown_cell_indices():
     filename = os.path.join(RESOURCE_DIR, 'jupyter_notebook_1.ipynb')
     parser = JupyterNotebookParser(filename)
@@ -213,17 +179,19 @@ def test_parser_get_markdown_cell_indices():
     expected_indices = [2, 5, 7, 9]
     assert markdown_cell_indices == expected_indices
 
+
 def test_parser_get_markdown_cell_sources():
     filename = os.path.join(RESOURCE_DIR, 'jupyter_notebook_1.ipynb')
     parser = JupyterNotebookParser(filename)
     markdown_sources = parser.get_markdown_cell_sources()
     expected_sources = [
         '## Section 1',
-        'Here is a math formula:\n\n$$c = \sqrt{a^2 + b^2}$$',  # noqa: W605
+        'Here is a math formula:\n\n$$c = \\sqrt{a^2 + b^2}$$',  # noqa: W605
         'Some texts.',
         '### Some more texts\n\n| Syntax      | Description |\n| ----------- | ----------- |\n| Header      | Title       |\n| Paragraph   | Text        |',  # noqa: E501
     ]
     assert markdown_sources == expected_sources
+
 
 def test_not_ipynb_file():
     with pytest.raises(NameError):
