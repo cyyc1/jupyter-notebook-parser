@@ -1,11 +1,9 @@
 import os
 
+from jupyter_notebook_parser import JupyterNotebookParser
 
 THIS_FILE_DIR = os.path.abspath(os.path.dirname(__file__))
 RESOURCE_DIR = os.path.join(THIS_FILE_DIR, 'resources')
-
-
-from jupyter_notebook_parser import JupyterNotebookParser
 
 
 def test_parser_get_code_cells():
