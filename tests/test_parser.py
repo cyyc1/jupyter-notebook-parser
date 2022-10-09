@@ -146,8 +146,8 @@ def test_parser_get_code_cell_indices():
 def test_parser_get_code_cell_sources():
     filename = os.path.join(RESOURCE_DIR, 'jupyter_notebook_1.ipynb')
     parser = JupyterNotebookParser(filename)
-    code_sources = parser.get_code_cell_sources()
-    expected_sources = [
+    code_sources = [_.raw_source for _ in parser.get_code_cell_sources()]
+    expected_raw_sources = [
         'from typing import List, Dict',
         'def some_function(arg1: List[str], arg2: Dict[str, float]):\n    print(arg1)\n    return arg2',  # noqa: E501
         "a = some_function(['a', 'b'], {'c': 0.2})",
@@ -156,7 +156,7 @@ def test_parser_get_code_cell_sources():
         'print(some_other_function())',
         "print('abcd\"efg\".')",
     ]
-    assert code_sources == expected_sources
+    assert code_sources == expected_raw_sources
 
 
 def test_parser_get_markdown_cells():
