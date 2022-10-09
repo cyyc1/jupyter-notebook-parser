@@ -1,6 +1,8 @@
 import json
 from typing import List, Dict
 
+from jupyter_notebook_parser.container import SourceCodeContainer
+
 
 class JupyterNotebookParser:
     def __init__(self, notebook_filename: str) -> None:
@@ -28,9 +30,10 @@ class JupyterNotebookParser:
     def get_code_cells(self) -> List[Dict]:
         return self._get_cells(type_='code')
 
-    def get_code_cell_sources(self) -> List[str]:
+    def get_code_cell_sources(self) -> List[SourceCodeContainer]:
         code_cells = self.get_code_cells()
-        return self._join_lines_in_cells(cells=code_cells)
+        raw_sources: List[str] = self._join_lines_in_cells(cells=code_cells)
+        return [SourceCodeContainer(_) for _ in raw_sources]
 
     def get_markdown_cell_indices(self) -> List[int]:
         return self._get_cell_indices(type_='markdown')
