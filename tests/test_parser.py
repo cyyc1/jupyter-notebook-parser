@@ -114,14 +114,14 @@ expected_all_cells = [
 
 def test_parser_get_all_cells():
     filename = os.path.join(RESOURCE_DIR, 'jupyter_notebook_1.ipynb')
-    parser = JupyterNotebookParser(filename)
+    parser = JupyterNotebookParser.open_from_file(filename)
     all_cells = parser.get_all_cells()
     assert all_cells == expected_all_cells
 
 
 def test_parser_get_code_cells():
     filename = os.path.join(RESOURCE_DIR, 'jupyter_notebook_1.ipynb')
-    parser = JupyterNotebookParser(filename)
+    parser = JupyterNotebookParser.open_from_file(filename)
     code_cells = parser.get_code_cells()
     expected_code_cells = [
         expected_all_cells[0],
@@ -137,7 +137,7 @@ def test_parser_get_code_cells():
 
 def test_parser_get_code_cell_indices():
     filename = os.path.join(RESOURCE_DIR, 'jupyter_notebook_1.ipynb')
-    parser = JupyterNotebookParser(filename)
+    parser = JupyterNotebookParser.open_from_file(filename)
     code_cell_indices = parser.get_code_cell_indices()
     expected_indices = [0, 1, 3, 4, 6, 8, 10]
     assert code_cell_indices == expected_indices
@@ -145,7 +145,7 @@ def test_parser_get_code_cell_indices():
 
 def test_parser_get_code_cell_sources():
     filename = os.path.join(RESOURCE_DIR, 'jupyter_notebook_1.ipynb')
-    parser = JupyterNotebookParser(filename)
+    parser = JupyterNotebookParser.open_from_file(filename)
     code_sources = [_.raw_source for _ in parser.get_code_cell_sources()]
     expected_raw_sources = [
         'from typing import List, Dict',
@@ -161,7 +161,7 @@ def test_parser_get_code_cell_sources():
 
 def test_parser_get_markdown_cells():
     filename = os.path.join(RESOURCE_DIR, 'jupyter_notebook_1.ipynb')
-    parser = JupyterNotebookParser(filename)
+    parser = JupyterNotebookParser.open_from_file(filename)
     markdown_cells = parser.get_markdown_cells()
     expected_markdown_cells = [
         expected_all_cells[2],
@@ -174,7 +174,7 @@ def test_parser_get_markdown_cells():
 
 def test_parser_get_markdown_cell_indices():
     filename = os.path.join(RESOURCE_DIR, 'jupyter_notebook_1.ipynb')
-    parser = JupyterNotebookParser(filename)
+    parser = JupyterNotebookParser.open_from_file(filename)
     markdown_cell_indices = parser.get_markdown_cell_indices()
     expected_indices = [2, 5, 7, 9]
     assert markdown_cell_indices == expected_indices
@@ -182,7 +182,7 @@ def test_parser_get_markdown_cell_indices():
 
 def test_parser_get_markdown_cell_sources():
     filename = os.path.join(RESOURCE_DIR, 'jupyter_notebook_1.ipynb')
-    parser = JupyterNotebookParser(filename)
+    parser = JupyterNotebookParser.open_from_file(filename)
     markdown_sources = parser.get_markdown_cell_sources()
     expected_sources = [
         '## Section 1',
@@ -195,17 +195,17 @@ def test_parser_get_markdown_cell_sources():
 
 def test_not_ipynb_file():
     with pytest.raises(NameError):
-        JupyterNotebookParser(os.path.join(RESOURCE_DIR, 'test.txt'))
+        JupyterNotebookParser.open_from_file(os.path.join(RESOURCE_DIR, 'test.txt'))
 
 
 def test_corrupted_ipynb_file_1():
     with pytest.raises(ValueError):
         filename = os.path.join(RESOURCE_DIR, 'invalid_notebook_1.ipynb')
-        parser = JupyterNotebookParser(filename)
+        parser = JupyterNotebookParser.open_from_file(filename)
         parser.get_markdown_cell_sources()
 
 
 def test_corrupted_ipynb_file_2():
     with pytest.raises(ValueError):
         filename = os.path.join(RESOURCE_DIR, 'invalid_notebook_2.ipynb')
-        JupyterNotebookParser(filename)
+        JupyterNotebookParser.open_from_file(filename)

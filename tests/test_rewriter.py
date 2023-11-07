@@ -12,8 +12,8 @@ RESOURCE_DIR = os.path.join(THIS_FILE_DIR, 'resources')
 def test_replace_source_in_code_cell():
     filename_before = os.path.join(RESOURCE_DIR, 'test_replace_before.ipynb')
     filename_after = os.path.join(RESOURCE_DIR, 'test_replace_after.ipynb')
-    parsed_before = JupyterNotebookParser(filename_before)
-    parsed_after = JupyterNotebookParser(filename_after)
+    parsed_before = JupyterNotebookParser.open_from_file(filename_before)
+    parsed_after = JupyterNotebookParser.open_from_file(filename_after)
 
     assert parsed_before.notebook_content != parsed_after.notebook_content
 
@@ -31,7 +31,7 @@ def test_replace_source_in_code_cell():
 
 def test_replace_source_in_code_cell__index_out_of_range():
     filename = os.path.join(RESOURCE_DIR, 'test_replace_before.ipynb')
-    parsed = JupyterNotebookParser(filename)
+    parsed = JupyterNotebookParser.open_from_file(filename)
     rewriter = JupyterNotebookRewriter(parsed)
     with pytest.raises(IndexError):
         rewriter.replace_source_in_code_cell(index=1000, new_source='')
