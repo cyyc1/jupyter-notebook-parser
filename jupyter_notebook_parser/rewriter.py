@@ -1,12 +1,11 @@
-
 from jupyter_notebook_parser.parser import JupyterNotebookParser
 
 
 def _split_lines(source: str):
     out = []
-    end = 0
+    end = -1
     while True:
-        start = end
+        start = end + 1
         end = source.find('\n', start)
         if end < 0:
             out.append(source[start:])
