@@ -1,26 +1,46 @@
 import json
+from os.path import splitext
+
 from typing import List, Dict
 
 from jupyter_notebook_parser.container import SourceCodeContainer
 
 
 class JupyterNotebookParser:
-    def __init__(self, notebook_filename: str) -> None:
-        if not notebook_filename.endswith('.ipynb'):
-            raise NameError('This file is not a Jupyter notebook')
+    __notebook_corrupted_msg = 'This notebook file is possibly corrupted'
 
-        self.notebook_corrupted_msg = 'This notebook file is possibly corrupted'
+    @classmethod
+    def open_from_file(cls, filename, *, assert_file_ext=True, encoding=None):
+        if assert_file_ext:
+            _, ext = splitext(filename)
+            if ext != ".ipynb":
+                raise NameError('This file is not a Jupyter notebook')
+
+            with open(filename, "rt", encoding=encoding) as fp:
+                return cls.read_from_stream(fp)
+
+    @classmethod
+    def read_from_stream(cls, fp):
         try:
-            with open(notebook_filename) as fp:
-                notebook_content = json.load(fp)
-        except json.JSONDecodeError:
-            raise ValueError(self.notebook_corrupted_msg)
-        else:
-            self.notebook_content: Dict = notebook_content
+            content = json.load(fp)
+        except json.JSONDecodeError as jde:
+            raise ValueError(cls.__notebook_corrupted_msg) from jde
+        return cls(content)
+
+    @classmethod
+    def read_from_string(cls, source):
+        try:
+            content = json.loads(source)
+        except json.JSONDecodeError as jde:
+            raise ValueError(cls.__notebook_corrupted_msg) from jde
+        return cls(content)
+
+    def __init__(self, notebook_content: Dict) -> None:
+        self.notebook_content: Dict = notebook_content
 
     def get_all_cells(self) -> List[Dict]:
         if 'cells' not in self.notebook_content:
-            raise ValueError(self.notebook_corrupted_msg)
+            raise ValueError(self.__notebook_corrupted_msg)
 
         return self.notebook_content['cells']
 
@@ -84,4 +104,4 @@ class JupyterNotebookParser:
 
     def _check_source_in_cell(self, cell: Dict) -> None:
         if 'source' not in cell:
-            raise ValueError(self.notebook_corrupted_msg)
+            raise ValueError(self.__notebook_corrupted_msg)
